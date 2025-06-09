@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Button({ children, onClick, variant = 'green', size = 'md', className = '' }) {
-  const baseStyles = 
-    'rounded-lg font-semibold shadow-md transition focus:outline-none focus:ring-4 focus:ring-opacity-50 ';
+  const baseStyles = 'rounded-lg font-semibold shadow-md transition focus:outline-none focus:ring-4 focus:ring-opacity-50';
 
   const variants = {
     green: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-400',
@@ -28,6 +27,15 @@ function Button({ children, onClick, variant = 'green', size = 'md', className =
 export default function App() {
   const [showBigYes, setShowBigYes] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
+  const [animateYes, setAnimateYes] = useState(false);
+
+  useEffect(() => {
+    if (showBigYes) {
+      // Add delay for animation after rendering the button
+      const timer = setTimeout(() => setAnimateYes(true), 50);
+      return () => clearTimeout(timer);
+    }
+  }, [showBigYes]);
 
   return (
     <div className="text-center mt-16 font-sans max-w-xl mx-auto px-4">
@@ -51,7 +59,7 @@ export default function App() {
           variant="green"
           size="lg"
           onClick={() => setShowVideo(true)}
-          className="mx-auto"
+          className={`mx-auto transform transition-transform duration-700 ${animateYes ? 'scale-125' : 'scale-75'}`}
         >
           Yes
         </Button>
@@ -66,7 +74,7 @@ export default function App() {
             loop
             muted
           >
-            <source src="/happyCar.mp4" type='video/mp4' />
+            <source src="/happyCar.mp4" type="video/mp4" />
           </video>
         </div>
       )}
