@@ -1,0 +1,72 @@
+import React, { useState } from 'react';
+
+// Reusable Button component with variants for colors and sizes
+function Button({ children, onClick, variant = 'green', size = 'md', className = '' }) {
+  const baseStyles = 
+    'rounded-lg font-semibold shadow-md transition focus:outline-none focus:ring-4 focus:ring-opacity-50 ';
+
+  const variants = {
+    green: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-400',
+    red: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-400',
+  };
+
+  const sizes = {
+    md: 'px-7 py-3 text-lg',
+    lg: 'px-16 py-6 text-4xl font-extrabold rounded-xl',
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      type="button"
+    >
+      {children}
+    </button>
+  );
+}
+
+export default function App() {
+  const [showBigYes, setShowBigYes] = useState(false);
+  const [showImage, setShowImage] = useState(false);
+
+  return (
+    <div className="text-center mt-16 font-sans max-w-xl mx-auto px-4">
+      <h2 className="text-3xl font-semibold mb-8 tracking-tight text-gray-800">
+        Do you love me?
+      </h2>
+
+      {!showBigYes && !showImage && (
+        <div className="flex justify-center gap-6 mb-12">
+          <Button variant="green" onClick={() => setShowImage(true)}>
+            Yes
+          </Button>
+          <Button variant="red" onClick={() => setShowBigYes(true)}>
+            No
+          </Button>
+        </div>
+      )}
+
+      {showBigYes && !showImage && (
+        <Button
+          variant="green"
+          size="lg"
+          onClick={() => setShowImage(true)}
+          className="mx-auto"
+        >
+          Yes
+        </Button>
+      )}
+
+      {showImage && (
+        <div className="flex justify-center mt-14">
+          <img
+            className="w-[300px] h-[500px] rounded-3xl shadow-2xl object-cover transition-transform duration-500 ease-in-out hover:scale-105"
+            src="https://m.media-amazon.com/images/I/51T+L3KfTzL.jpg"
+            alt="Lovely"
+          />
+        </div>
+      )}
+    </div>
+  );
+}
